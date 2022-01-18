@@ -548,3 +548,185 @@ ls /srv/log/
 
 
 
+## Centralização de Logs com Graylog.
+
+O graylog é um software para gerência de logs, Criado em 2009 por lennart, faz parte do conjunto de softwares do MongoDB e Elasticsearch, possibilitando a criação de filtros e aumentando a velocidade da pesquisa de mensagens.
+
+Imagem ilustrativa do conjunto de softwares que vamos instalar.
+
+![](image/graylog.png)
+
+Logado na máquina graylog obviamente com o comando:
+
+```bash
+ssh suporte@192.168.56.12
+```
+
+Atualize os pacotes com o comando:
+
+```bash
+sudo apt update
+```
+
+### Instalando o Java para o ElasticSearch.
+
+Instale os pré requisitos com o comando:
+> entre os pré requisitos estão alguns pacotes de java, alguns para aceitar pacotes https. 
+
+```bash
+sudo apt install -y apt-transport-https openjdk-8-jre-headless
+uuid-runtime pwgen
+```
+
+Vamos configurar o **JAVA_HOME** para instalar o **ElasticSearch**
+
+> O java_home é uma variavel de ambiente responsavel por direcionar qualquer aplicativo ou serviço que utilize o Java em si para sua execução ou instalação que é o nosso caso. 
+
+Teste a variavel com o comando **echo** no terminal da graylog-audit
+> não tem nada. 
+```bash
+echo $JAVA_HOME
+```
+![](image/ECHO.png)
+
+Essa variavel fica armazenada em **/etc/environment**, edite o arquivo com o arquivo com o comando:
+
+```bash
+sudo vim /etc/enviroment +$
+```
+> Já vai ter algumas informações sobre o PATH lá, então na proxima linha voce vai adicionar o **JAVA_HOME** da seguinte forma:
+
+```
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/
+bin:/usr/games:/usr/local/games:/snap/bin" # já tem
+JAVA_HOME="/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/" # adicione essa linha.
+```
+Depois de salvar o arquivo com :wq!, vamos carregar o diretorio com as novas informações para o sistema com o comando:
+
+```bash
+source /etc/environment
+```
+
+Visualize agora a variavel **JAVA_HOME**.
+> tem informações la dentro.
+
+```bash
+echo $JAVA_HOME
+```
+![](image/javahome.png)
+
+
+Verifique se o java esta instalado com o comando.
+> tem que estar em !
+```bash
+java -version
+```
+### Instalando o ElastichSearch
+
+- Adicione a chave do repositório com o comando
+
+```bash
+wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+```
+ 
+- Crie o arquivo de configuração do Elastic **elastic-6.x.list** e adicione os repositorios necessarios no arquivo.
+
+```bash 
+sudo vim /etc/apt/sources.list.d/elastic-6.x.list
+```
+Adicione ao arquivo
+```
+deb https://artifacts.elastic.co/packages/oss-6.x/apt stable main
+```
+
+- Atualize os pacotes do sistema.
+```bash
+sudo apt-get update
+```
+
+- Instale o ElasticSearch com o comando
+
+```bash
+sudo apt-get install elasticsearch-oss -y
+```
+
+
+- Edite o nome do cluster no arquivo **elasticsearch.yml** no diretorio elasticsearch com o comando:
+
+```bash
+sudo vi /etc/elasticsearch/elasticsearch.yml
+```
+Use o comando **:set number** para enumerar as linhas e ficar mais facil de localizar ok.
+
+Na linha 17 apague o jogo da velha, para descomentar e por fim altere o nome para **graylog**, não esqueça de salvar. 
+
+![](image/clustername.png)
+
+
+- Outro arquivo que precisamos editar é o **jvm.options** no mesmo diretorio elasticsearch. Use o comando.
+
+```bash
+sudo vim /etc/elasticsearch/jvm.options
+```
+
+
+
+### Instalando o MongoDB.
+
+- Adicone a chave do repositorio com o comando
+
+```bash
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --
+recv 9DA31620334BD75D9DCB49F368818C72E52529D4
+```
+
+- Crie um arquivo de configuração do MongoDB em **/etc/apt/sources.list.d/** o novo arquivo **mongodb-org-4.0.list** e adicione todos os repositorios necessarios para o MongoDB.
+
+```bash
+sudo vim /etc/apt/sources.list.d/mongodb-org-4.0.list
+```
+
+Adicone ao arquivo o código
+
+```bash
+deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.0 multiverse
+```
+
+Depois atualize os pacotes do sistema
+
+```bash
+sudo apt update
+```
+ E instale o MongoDB com o comando 
+ 
+```bash
+ sudo apt install mongodb-org -y
+```
+
+Vamos configurar para ativar o serviço do mongo sempre quando ligarmos a máquina
+
+```bash
+sudo systemctl enable mongod.service
+```
+
+Vamos iniciar o serviço
+```bash
+sudo systemctl start mongod.service
+```
+
+Vamos verificar o status
+```bash
+sudo systemctl status mongod.service
+```
+![](image/servicemongo.png)
+
+Se estiver com o mysql funcionando pode desativar, não vai usar mais e vai consumir mais processamento. 
+
+
+
+
+
+
+
+
+
