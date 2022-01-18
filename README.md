@@ -779,9 +779,8 @@ password_secret | Colar o resultado do comando pwgen -ŋN 1 -ŋs 96
 root_password_sha2 |  Colar o resultado do comando echo -n 4linux
 root_timezone | Horario | America/Sao_Paulo
 http_bind_address | Interface de rede usada pela interface HTTP do Graylog.| IP da sua maquina
-http_publish_uri | Usado para se comunicar com os outros nós do Graylog no | IP da sua maquina não tire o 9000
-cluster e por todos os clientes que usam a interface web do
-Graylog.
+http_publish_uri | Usado para se comunicar com os outros nós do Graylog no cluster e por todos os clientes que usam a interface web do
+Graylog. | IP da sua maquina não tire o 9000
 http_external_uri | 
 Usado pela interface web do Graylog para se comunicar com a
 API REST do Graylog, interface da web do Graylog.| IP da sua maquina não tira o 9000
