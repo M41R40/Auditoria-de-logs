@@ -828,4 +828,4 @@ senha: 4linux
 você vai visualizar este painel:
  
  
- ![](image/graylog.png)
+ ![](image/cheia.png)
