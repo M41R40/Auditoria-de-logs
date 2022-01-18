@@ -775,7 +775,6 @@ vim /etc/graylog/server/server.conf
 Altere os seguintes valores
 Parametro | Significado | Como preencher.
 :-------: | :---------------------------: | :--------------------:
--
 password_secret | Colar o resultado do comando pwgen -ŋN 1 -ŋs 96
 root_password_sha2 |  Colar o resultado do comando echo -n 4linux
 root_timezone | Horario | America/Sao_Paulo
