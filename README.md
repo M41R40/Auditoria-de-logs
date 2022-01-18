@@ -570,73 +570,35 @@ sudo apt update
 
 ### Instalando o Java para o ElasticSearch.
 
-Instale os pré requisitos com o comando:
-> entre os pré requisitos estão alguns pacotes de java, alguns para aceitar pacotes https. 
-
-```bash
-sudo apt install -y apt-transport-https openjdk-8-jre-headless
-uuid-runtime pwgen
-```
-
-Vamos configurar o **JAVA_HOME** para instalar o **ElasticSearch**
-
-> O java_home é uma variavel de ambiente responsavel por direcionar qualquer aplicativo ou serviço que utilize o Java em si para sua execução ou instalação que é o nosso caso. 
-
-Teste a variavel com o comando **echo** no terminal da graylog-audit
-> não tem nada. 
-```bash
-echo $JAVA_HOME
-```
-![](image/ECHO.png)
-
-Essa variavel fica armazenada em **/etc/environment**, edite o arquivo com o arquivo com o comando:
-
-```bash
-sudo vim /etc/enviroment +$
-```
-> Já vai ter algumas informações sobre o PATH lá, então na proxima linha voce vai adicionar o **JAVA_HOME** da seguinte forma:
-
-```
-PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/
-bin:/usr/games:/usr/local/games:/snap/bin" # já tem
-JAVA_HOME="/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/" # adicione essa linha.
-```
-Depois de salvar o arquivo com :wq!, vamos carregar o diretorio com as novas informações para o sistema com o comando:
-
-```bash
-source /etc/environment
-```
-
-Visualize agora a variavel **JAVA_HOME**.
-> tem informações la dentro.
-
-```bash
-echo $JAVA_HOME
-```
-![](image/javahome.png)
-
 
 Verifique se o java esta instalado com o comando.
 > tem que estar em !
 ```bash
 java -version
 ```
+
+Instale o java com o comando:
+
+```bash
+sudo apt install default-jre
+```
 ### Instalando o ElastichSearch
 
 - Adicione a chave do repositório com o comando
 
 ```bash
-wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+curl -fsSL https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+
 ```
  
-- Crie o arquivo de configuração do Elastic **elastic-6.x.list** e adicione os repositorios necessarios no arquivo.
+- Crie o arquivo de configuração do Elastic **elastic-7.x.list** e adicione os repositorios necessarios no arquivo.
 
 ```bash 
-sudo vim /etc/apt/sources.list.d/elastic-6.x.list
+sudo vim /etc/apt/sources.list.d/elastic-7.x.list
 ```
 Adicione ao arquivo
 ```
-deb https://artifacts.elastic.co/packages/oss-6.x/apt stable main
+deb https://artifacts.elastic.co/packages/7.x/apt stable main
 ```
 
 - Atualize os pacotes do sistema.
@@ -647,7 +609,7 @@ sudo apt-get update
 - Instale o ElasticSearch com o comando
 
 ```bash
-sudo apt-get install elasticsearch-oss -y
+sudo apt-get install elasticsearch
 ```
 
 
@@ -668,7 +630,30 @@ Na linha 17 apague o jogo da velha, para descomentar e por fim altere o nome par
 ```bash
 sudo vim /etc/elasticsearch/jvm.options
 ```
+Use o comando **:set number** para enumerar as linhas e ficar mais facil de localizar ok.
 
+Nas linhas 22 e 23 altere de 1 giga para 512 megas.
+
+
+![](image/512megas.png)
+
+
+- Vamos configurar para ativar o serviço do elasticsearch sempre quando ligarmos a máquina
+
+```bash
+sudo systemctl enable elasticsearch.service
+```
+
+- Inicie o serviço com o comando:
+```bash
+sudo systemctl start elasticsearch.service
+```
+- Verifique o serviço com o comando:
+```bash
+sudo systemctl status elasticsearch.service
+```
+
+![](image/elasticenable.png)
 
 
 ### Instalando o MongoDB.
@@ -692,29 +677,29 @@ Adicone ao arquivo o código
 deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.0 multiverse
 ```
 
-Depois atualize os pacotes do sistema
+- Depois atualize os pacotes do sistema
 
 ```bash
 sudo apt update
 ```
- E instale o MongoDB com o comando 
+- E instale o MongoDB com o comando 
  
 ```bash
  sudo apt install mongodb-org -y
 ```
 
-Vamos configurar para ativar o serviço do mongo sempre quando ligarmos a máquina
+- Vamos configurar para ativar o serviço do mongo sempre quando ligarmos a máquina
 
 ```bash
 sudo systemctl enable mongod.service
 ```
 
-Vamos iniciar o serviço
+- Vamos iniciar o serviço
 ```bash
 sudo systemctl start mongod.service
 ```
 
-Vamos verificar o status
+- Vamos verificar o status
 ```bash
 sudo systemctl status mongod.service
 ```
@@ -722,11 +707,125 @@ sudo systemctl status mongod.service
 
 Se estiver com o mysql funcionando pode desativar, não vai usar mais e vai consumir mais processamento. 
 
+### Instalação do graylog
 
 
+Baixe o arquivo .deb do repositório com o comando:
+
+```bash
+sudo wget https://packages.graylog2.org/repo/packages/graylog-3.3-
+repository_latest.deb
+```
+Descompacte a pasta com o comando
+```bash 
+sudo dpkg -i graylog-3.3-repository_latest.deb
+```
+Atualize os pacotes
+```bash
+sudo apt-get update
+```
+
+Instale o pacote **graylog-server** com o comando
+```bash
+sudo apt-get  install graylog-server -y
+```
 
 
+- Vamos configurar para ativar o serviço sempre quando ligarmos a máquina
+
+```bash
+sudo systemctl enable graylog-server.service
+```
+
+- Vamos iniciar o serviço
+```bash
+sudo systemctl start graylog-server.service
+```
+
+- Vamos verificar o status
+```bash
+sudo systemctl status graylog-server.service
+```
+
+Talvez de primeira o graylog não suba o serviço, isso porque pode demorar um pouco e tambem porque ainda há algumas configurações a finalizar.
+
+![](image/graylogservice.png)
+
+- Crie a senha para autenticação no Graylog Server com o comando
+> Guarde a senha.
+
+8yM7WtmKHjlUQEG6RSd1d5mhHHUx2xKKMtIJzuztjg0cDSsAF4yhP8OVw11gJTVbNxIvkpIA9iyasVgfyyPDpVzS8jZamcfG
+
+```bash
+sudo pwgen -N 1 -s 96
+```
+Gere a hash e salve com o comando
+
+212e018e6377125c10c19d912a5bb537898ccd86d9e847131de1695330f69f7d  -
+```bash
+echo -n 4linux | sha256sum
+```
+
+- Localize o arquivo de configuração do Graylog em **/etc/graylog/server/server.conf** e altere os parametros que geramos nos comandos anteriores.
+
+```bash
+vim /etc/graylog/server/server.conf
+```
+
+Altere os seguintes valores
+Parametro | Significado | Como preencher.
+:-------: | :---------------------------: | :--------------------:
+-
+password_secret | Colar o resultado do comando pwgen -ŋN 1 -ŋs 96
+root_password_sha2 |  Colar o resultado do comando echo -n 4linux
+root_timezone | Horario | America/Sao_Paulo
+http_bind_address | Interface de rede usada pela interface HTTP do Graylog.| IP da sua maquina
+http_publish_uri | Usado para se comunicar com os outros nós do Graylog no | IP da sua maquina não tire o 9000
+cluster e por todos os clientes que usam a interface web do
+Graylog.
+http_external_uri | 
+Usado pela interface web do Graylog para se comunicar com a
+API REST do Graylog, interface da web do Graylog.| IP da sua maquina não tira o 9000
 
 
+Em seguida reinicie o graylog-server
+
+```bash
+sudo systemctl restart graylog-server
+```
+
+Veja o status
+
+```bash 
+sudo systemctl status graylog-server
+```
+Agora funciona
 
 
+![](image/rodando.png)
+
+
+Faça o mesmo com o elasticsearch.
+
+- reinicie o serviço com o comando:
+```bash
+sudo systemctl restart elasticsearch.service
+```
+- Verifique o serviço com o comando:
+```bash
+sudo systemctl status elasticsearch.service
+```
+
+Abra o ip que setou no arquivo do graylog no navegador com **:9000** no final que é a porta do serviço. 
+
+![](image/deucerto.png)
+
+Logue com as informações:
+
+Usuario: admin
+senha: 4linux
+
+você vai visualizar este painel:
+ 
+ 
+ ![](image/graylog.png)
