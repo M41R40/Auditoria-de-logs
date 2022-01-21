@@ -47,7 +47,7 @@ desativação dos registros (log) de suas próprias atividades (ver 12.4.3).
 ## Introdução ao sistema de Logs
 
 Atualmente, o Linux possui três diferentes serviços para a administração de logs, os quais
-seguem a mesma linha.                
+seguem a mesma linha. 
 
 São eles: **syslog (o mais antigo), syslog-ng e rsyslog.**
 
@@ -455,7 +455,7 @@ Acesse o servidor graylog-audit.
 
  > Descomente as linhas responsaveis pelo protocolo 514 imudp e imtcp.
 
- ![](image/centralização.png)
+ ![](image/centraliza.png)
 
 
 reinicie o serviço com o comando:
@@ -525,9 +525,15 @@ Logue na máquina kibana-audit em outro terminal tambem.
 Depois use o comando a seguir para criar o arquivo **etc/rsyslog.conf**, configurando o ENVIO de logs para o servidor graylog.
 > Faça isso nas duas máquinas. O parametro +$ é para direciona-lo diretamente ao final do arquivo chamado.
 
-```bashvagrant ela, ponto, estrela. Dois arrobas para protocolo TCP, ou um arroba para protocolo UDP, seguido pelo nome do servidor, só fechar e salvar depois Conforme a imagem:
+```bash
+sudo vi /etc/rsyslog.conf +$
+```
+
+>Dois arrobas para protocolo TCP, ou um arroba para protocolo UDP, seguido pelo nome do servidor, só fechar e salvar depois Conforme a imagem:
 
 ![](image/remotehost.png)
+
+
 >nas duas máquinas
 
 Depois é necessário reiniciar o serviço novamente, com o comando:
@@ -583,7 +589,7 @@ Instale o java com o comando:
 sudo apt install default-jre
 ```
 ### Instalando o ElastichSearch
-
+> O graylog não funciona com o ElastichSearch 7. Então instale o 6.
 - Adicione a chave do repositório com o comando
 
 ```bash
@@ -824,3 +830,13 @@ você vai visualizar este painel:
  
  
  ![](image/cheia.png)
+ 
+ 
+## Configurar e entender os Inputs.
+
+Input é para aceitar a entrada de outro local para o graylog.
+
+Vamos trabalhar com o input do syslog (UDP). 
+Nos clientes vamos configurar para que todos os logs sejam direcionados para o Graylog. 
+
+
