@@ -30,7 +30,7 @@ e saída (log-off) no sistema;
  g) alterações na configuração do sistema;
  h) uso de privilégios;
  i) uso de aplicações e utilitários do sistema;
- j) arquivos acessados e o tipo de acesso;
+ j) arquivos acessados e o to de acesso;
  k) endereços e protocolos de rede;
  l) alarmes provocados pelo sistema de controle de acesso;
  m) ativação e desativação dos sistemas de proteção, como sistemas de antivírus e sistemas de
@@ -47,7 +47,7 @@ desativação dos registros (log) de suas próprias atividades (ver 12.4.3).
 ## Introdução ao sistema de Logs
 
 Atualmente, o Linux possui três diferentes serviços para a administração de logs, os quais
-seguem a mesma linha. 
+seguem a mesma linha.
 
 São eles: **syslog (o mais antigo), syslog-ng e rsyslog.**
 
@@ -58,7 +58,7 @@ São eles: **syslog (o mais antigo), syslog-ng e rsyslog.**
 ##### Padrões de funcionalidades do syslog
 - lastlog = contém informações dos últimos logins de usuários;
 - dmesg = contém mensagens de reconhecimento de hardware pelo kernel;.
-- messages =  é o principal log do sistema, possui mensagens enviadas por aplicações e serviços;
+- messages =  é o princal log do sistema, possui mensagens enviadas por aplicações e serviços;
 - syslog  =  arquivo padrão do sistema para qualquer evento que não possua um arquivo
 específico, contendo uma diversidade.
 
@@ -72,7 +72,7 @@ vagrant up
 
 As máquinas listadas faram conexão com o virtual box, e inicializaram os sistemas. Isso pode demorar um pouco no windows.
 
-Para saber o ip de cada máquina, basta utilizar o comando :
+Para saber o  de cada máquina, basta utilizar o comando :
 
 ```bash
 cat enviroment.yaml
@@ -80,13 +80,13 @@ cat enviroment.yaml
 
 >- name: webserver-audit
   hostname: webserver
-  ipaddress: 192.168.56.11
+  address: 192.168.56.11
 - name: graylog-audit
   hostname: graylog
-  ipaddress: 192.168.56.12
+  address: 192.168.56.12
 - name: kibana-audit
   hostname: kibana
-  ipaddress: 192.168.56.13
+  address: 192.168.56.13
 
 >senha:4linux
 
@@ -226,7 +226,7 @@ sudo auditctl -l
 
 - **-w /etc/passwd**: inicia um observador (watcher) no arquivo passwd. Quando o
 arquivo for acessado, o watcher irá gerar eventos.
-- **-p rwra**: define o tipo de permissão a ser observado. A opção rwxa acrescenta leitura(r),
+- **-p rwra**: define o to de permissão a ser observado. A opção rwxa acrescenta leitura(r),
 gravação(w),  execução(x) e alteração de atributos(a).
 
 
@@ -430,7 +430,7 @@ Irá verificar que o comando executado pelo root, irá aparecer no log do arquiv
 
 Competências deste conteúdo
 - Configurar servidor de logs remoto
-- Logs remotos utilizando a criptografia TLS
+- Logs remotos utilizando a crtografia TLS
 - Configuração de armazenamento de logs
 - Planejamento de capacidade e backup
 - Armazenando logs no MySQL
@@ -463,12 +463,12 @@ reinicie o serviço com o comando:
 systemctl restart rsyslog
 ```
 
- Agora com o comando a seguir, verifique o ip do seu servidor de logs.
+ Agora com o comando a seguir, verifique o  do seu servidor de logs.
  ```bash
- ip -a
+  -a
  ```
  Conforme a imagem :
- ![](image/ip.png)
+ ![](image/.png)
 
  E com o este comando você pode verificar se o **Rsyslog** esta recebendo requisições na porta 514/TPC. o comando ss é de netstat - listening
  ```bash
@@ -596,10 +596,10 @@ sudo apt install default-jre
 curl -fsSL https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
 
 ```
- 
+
 - Crie o arquivo de configuração do Elastic **elastic-7.x.list** e adicione os repositorios necessarios no arquivo.
 
-```bash 
+```bash
 sudo vim /etc/apt/sources.list.d/elastic-7.x.list
 ```
 Adicione ao arquivo
@@ -626,7 +626,7 @@ sudo vi /etc/elasticsearch/elasticsearch.yml
 ```
 Use o comando **:set number** para enumerar as linhas e ficar mais facil de localizar ok.
 
-Na linha 17 apague o jogo da velha, para descomentar e por fim altere o nome para **graylog**, não esqueça de salvar. 
+Na linha 17 apague o jogo da velha, para descomentar e por fim altere o nome para **graylog**, não esqueça de salvar.
 
 ![](image/clustername.png)
 
@@ -688,8 +688,8 @@ deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.0 mu
 ```bash
 sudo apt update
 ```
-- E instale o MongoDB com o comando 
- 
+- E instale o MongoDB com o comando
+
 ```bash
  sudo apt install mongodb-org -y
 ```
@@ -711,7 +711,7 @@ sudo systemctl status mongod.service
 ```
 ![](image/servicemongo.png)
 
-Se estiver com o mysql funcionando pode desativar, não vai usar mais e vai consumir mais processamento. 
+Se estiver com o mysql funcionando pode desativar, não vai usar mais e vai consumir mais processamento.
 
 ### Instalação do graylog
 
@@ -723,7 +723,7 @@ sudo wget https://packages.graylog2.org/repo/packages/graylog-3.3-
 repository_latest.deb
 ```
 Descompacte a pasta com o comando
-```bash 
+```bash
 sudo dpkg -i graylog-3.3-repository_latest.deb
 ```
 Atualize os pacotes
@@ -780,13 +780,14 @@ vim /etc/graylog/server/server.conf
 
 Altere os seguintes valores
 Parametro | Significado | Como preencher.
-:-------: | :---------------------------: | :--------------------:
+:-------: | :-----------: | :--------------------:
+
 password_secret | Colar o resultado do comando pwgen -ŋN 1 -ŋs 96
 root_password_sha2 |  Colar o resultado do comando echo -n 4linux
 root_timezone | Horario | America/Sao_Paulo
-http_bind_address | Interface de rede usada pela interface HTTP do Graylog.| IP da sua maquina
-http_publish_uri | Usado para se comunicar com os outros nós do Graylog no cluster e por todos os clientes que usam a interface web do Graylog. | IP da sua maquina não tire o 9000
-http_external_uri | Usado pela interface web do Graylog para se comunicar com a API REST do Graylog, interface da web do Graylog.| IP da sua maquina não tira o 9000
+http_bind_address | Interface de rede usada pela interface HTTP do Graylog.|  da sua maquina
+http_publish_uri | Usado para se comunicar com os outros nós do Graylog no cluster e por todos os clientes que usam a interface web do Graylog. |  da sua maquina não tire o 9000
+http_external_uri | Usado pela interface web do Graylog para se comunicar com a API REST do Graylog, interface da web do Graylog.|  da sua maquina não tira o 9000
 
 
 Em seguida reinicie o graylog-server
@@ -797,7 +798,7 @@ sudo systemctl restart graylog-server
 
 Veja o status
 
-```bash 
+```bash
 sudo systemctl status graylog-server
 ```
 Agora funciona
@@ -817,7 +818,7 @@ sudo systemctl restart elasticsearch.service
 sudo systemctl status elasticsearch.service
 ```
 
-Abra o ip que setou no arquivo do graylog no navegador com **:9000** no final que é a porta do serviço. 
+Abra o  que setou no arquivo do graylog no navegador com **:9000** no final que é a porta do serviço.
 
 ![](image/deucerto.png)
 
@@ -827,16 +828,258 @@ Usuario: admin
 senha: 4linux
 
 você vai visualizar este painel:
- 
- 
+
+
  ![](image/cheia.png)
- 
- 
+
+
 ## Configurar e entender os Inputs.
 
 Input é para aceitar a entrada de outro local para o graylog.
 
-Vamos trabalhar com o input do syslog (UDP). 
-Nos clientes vamos configurar para que todos os logs sejam direcionados para o Graylog. 
+Vamos trabalhar com o input do syslog (UDP).
+Nos clientes vamos configurar para que todos os logs sejam direcionados para o Graylog.
+
+Acesse System > Inputs em Select
+input
+Em seguida selecione Syslog UDP e clique em Launch new input.
+Preencha os seguintes campos:
+Node: Selecione o node Title: SYSLOG Bind address: 172.16.0.12 Port: 1514
+
+## Configurar os clientes.
+
+Edite o arquivo:
+
+```bash
+sudo vim /etc/rsyslog.conf
+```
+Adicione a linha ao final do arquivo:
+
+```bash
+-
+-
+*.* @graylog:1514;RSYSLOG_SyslogProtocol23Format
+```
 
 
+Reinicie o sistema com:
+
+```bash
+sudo systemctl restart rsyslog
+```
+
+# Instalação e configuração da pilha ELK
+
+
+Vamos instalar o elasticsearch e o logstash na máquina Kibana-audit.
+
+#### ElasticSearch
+
+Inicie atualizando o repositorio com o comando:
+
+```bash
+sudo apt update
+```
+Depois instale o pacote **openjdk-11-jre** com o comando:
+
+```bash
+sudo apt install -y openjdk-11-jre
+```
+
+Teste para verificar a instalação com o comando:
+
+```bash
+java --version
+```
+
+Instale os pré requisitos com o comando:
+
+```bash
+sudo apt install -y wget apt-transport-https curl
+```
+
+Adicione a chave de configuração do repositório do ElasticSearc:
+
+```bash
+wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+```
+
+Depois crie o arquivo de configuração em **/etc/apt/sources.list.d/elastic-7.x.list** e adicione ao arquivo:
+
+```bash
+sudo vim /etc/apt/sources.list.d/elastic-7.x.list
+```
+>deb https://artifacts.elastic.co/packages/oss-7.x/apt
+stable main
+
+Agora atualize a lista de pacotes com o comando:
+
+```bash
+sudo apt update
+```
+
+E instale o elasticsearch com o comando:
+
+```bash
+sudo apt install -y elasticsearch-oss
+```
+
+Agora edite o arquivo **elastisearch.yml** dentro do diretorio **/etc/elasticsearch**
+
+```bash
+sudo vim /etc/elasticsearch/elasticsearch.yml
+```
+Edite as linhas, para:
+
+>cluster.name: auditlogs
+path.data: /var/lib/elasticsearch
+path.logs: /var/log/elasticsearch
+network.host: ip da kibana
+http.port: 9200
+cluster.initial_master_nodes: "ip da kibana"
+
+- Outro arquivo que precisamos editar é o **jvm.options** no mesmo diretorio elasticsearch. Use o comando.
+
+```bash
+sudo vim /etc/elasticsearch/jvm.options
+```
+Use o comando **:set number** para enumerar as linhas e ficar mais facil de localizar ok.
+
+Nas linhas 22 e 23 altere de 1 giga para 512 megas.
+
+
+![](image/512megas.png)
+
+
+- Vamos configurar para ativar o serviço do elasticsearch sempre quando ligarmos a máquina
+
+```bash
+sudo systemctl enable elasticsearch.service
+```
+
+- Inicie o serviço com o comando:
+```bash
+sudo systemctl start elasticsearch.service
+```
+- Verifique o serviço com o comando:
+```bash
+sudo systemctl status elasticsearch.service
+```
+
+![](image/elasticenable.png)
+
+Teste a comunicação do Elastic na porta 9200:
+
+```bash
+curl -X GET http://ipdakibana:9200
+```
+
+![](image/elastickibana.png)
+
+
+#### Logstash
+
+Inicie alterando para 512m o tamanho inicial e máximo do espaço total no arquivo **/etc/logstash/jvm.options**
+
+```bash
+sudo vim /etc/logstash/jvm.options
+```
+Inicie e ative a inicialização do sistema o serviço Logstash com os comandos:
+
+```bash
+sudo systemctl start logstash
+sudo systemctl enable logstash
+```
+
+#### Kibana
+
+Vamos instalação o kibana e o nginx porque somente o kibana deixará o nosso site sem proteção ao acesso à ELK, então o nginx fará um papel de autenticador, para possibilitar logar com um usuario e senha.
+
+Instale o kibana e o nginx com o comando:
+
+```bash
+sudo apt install kibana-oss nginx -y
+```
+
+Edite algumas linhas do arquivo **kibana.yml** para realizar a configuração que deseja.
+
+```bash
+sudo vim /etc/kibana/kibana.yml
+```
+Descomente e altere o ip das linhas:
+>server.port: 5601
+server.host: "ip do kibana"
+elasticsearch.hosts: ["http://ip do kibana:9200"]
+
+Inicie e ative na inicialização do sistema o serviço do Logstash.
+```bash
+sudo systemctl start kibana
+sudo systemctl enable kibana
+```
+
+#### Nginx
+
+Já com o nginx instalado, vamos configurar ele para realizar Proxy reverso e autenticação básica para o acesso ao kibana.
+
+Crie o arquivo **kibana.4labs.example** no diretório **/etc/nginx/sites-available** com o comando:
+
+```bash
+sudo vim /etc/nginx/sites-available/kibana.4labs.example
+```
+> server {
+      listen 80;
+      server_name kibana.4labs.example;
+      auth_basic "Acesso Restrito";
+      auth_basic_user_file /etc/nginx/htpasswd.users;
+      location / {
+          proxy_pass http://ipdakibana:5601/;
+          proxy_http_version 1.1;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection 'upgrade';
+          proxy_set_header Host $host;
+          proxy_cache_bypass $http_upgrade;
+    }
+}
+
+Em seguida crie um arquivo, para armazenar um usuário e senha do usuário administrativo do Kibana:
+
+```bash
+echo "admin:`openssl passwd 4linux`" | sudo tee -a /etc/nginx/  htpasswd.users
+```
+
+ative a nova configuração criando um link simbolico para o diretorio sites-enabled:
+
+```bash
+sudo ln -s /etc/nginx/sites-available/kibana.4labs.example /etc/
+nginx/sites-enabled/kibana.4labs.example
+```
+E remova o arquivo de configuração **default** do nginx:
+
+```bash
+sudo rm /etc/nginx/sites-enabled/default
+```
+
+Reinicie e ative na inicialização do sistema o serviço do Nginx.
+```bash
+sudo systemctl restart nginx
+sudo systemctl enable nginx
+```
+
+Por fim para acessar ao link configure em sua máquina local o endereço seguido do nome do site.
+
+máquina local:
+```bash
+sudo nano /etc/hosts
+```
+> ipdakibana kibana.4labs.example
+
+![](image/ipkibana.png)
+
+Acesse em seu navegador com a url:
+
+```html
+http://kibana.4labs.example
+```
+>Deve solicitar seu usuario e senha.
+
+![](image/painelkibana.png)
